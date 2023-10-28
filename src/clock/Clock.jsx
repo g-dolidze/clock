@@ -17,6 +17,7 @@ function Clock() {
 
     return () => clearInterval(intervalId);
   }, []);
+  console.log(time.getMonth())
 
   return (
     <div className="page">
