@@ -1,0 +1,104 @@
+.page {
+  .clock {
+    width: 500px;
+    height: 500px;
+    border: 5px solid rgb(80, 80, 231);
+    border-radius: 50%;
+    position: relative;
+    .o1 {
+      font-size: 40px;
+      position: absolute;
+      top: -10px;
+      left: 50%;
+    }
+    .o2 {
+      position: absolute;
+      top: 8%;
+      left: 75%;
+    }
+    .o3 {
+      position: absolute;
+      top: 25%;
+      left: 90%;
+    }
+    .o4 {
+      font-size: 40px;
+      position: absolute;
+      bottom: 50%;
+      left: 97%;
+    }
+    .o5 {
+      position: absolute;
+      bottom: 25%;
+      left: 90%;
+    }
+    .o6 {
+      position: absolute;
+      bottom: 8%;
+      left: 75%;
+    }
+    .o7 {
+      font-size: 40px;
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+    }
+    .o8 {
+      position: absolute;
+      bottom: 8%;
+      right: 75%;
+    }
+    .o9 {
+      position: absolute;
+      bottom: 25%;
+      right: 90%;
+    }
+    .o10 {
+      font-size: 40px;
+      position: absolute;
+      bottom: 50%;
+      right: 95%;
+    }
+    .o11 {
+      position: absolute;
+      top: 25%;
+      right: 90%;
+    }
+    .o12 {
+      position: absolute;
+      top: 8%;
+      right: 75%;
+    }
+    .time {
+      margin-left: 25px;
+    }
+    .center {
+      width: 50px;
+      height: 50px;
+      background-color: antiquewhite;
+      border-radius: 50%;
+      position: absolute;
+      top: 46%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      left: 47%;
+      .blackcenter {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background-color: black;
+      }
+    }
+  }
+}
+.seconds {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 10px;
+  background-color: coral;
+  border-radius: 30%;
+  transition: tra;
+}

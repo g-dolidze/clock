@@ -23,6 +23,8 @@ function Clock() {
     <div className="page">
       <div className="clock-page">
         <div className="timer hour">
+          <div className='balt'></div>
+          <div className='balt b2'></div>
           <p>{hours < 10 ? '0' + hours : hours}</p>
         </div>
         <div className="timer minutes">
