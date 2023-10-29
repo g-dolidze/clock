@@ -26,5 +26,17 @@
     justify-content: center;
     align-items: center;
     font-size: 32px;
+    position: relative;
+    .balt {
+      position: absolute;
+      top: 0;
+      left: 25%;
+      width: 30px;
+      height: 60px;
+      background-color: azure;
+    }
+    .b2 {
+      margin-left: 110px;
+    }
   }
 }
