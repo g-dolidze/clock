@@ -4,6 +4,7 @@ import  './clock.scss'
 function Clock2() {
   return (
     <div className='page'>
+
         <ul className='clock'>
             <li className='o1 time'></li>
             <li className='o2 time'></li>
