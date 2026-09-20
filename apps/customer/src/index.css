@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Archivo", "system-ui", sans-serif;
+  --font-body: "Plus Jakarta Sans", "system-ui", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --color-ink: #211714;
+  --color-ink-light: #2f231f;
+  --color-accent: #e3572c;
+  --color-accent-light: #ff8a5c;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: white;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+}
+
+.font-mono-accent {
+  font-family: var(--font-mono);
+}
+
+/* Leaflet needs an explicit height on its container, and the default
+   marker icon URLs it ships with don't survive bundling — components using
+   the map set icon URLs manually instead. */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-ink-light);
+}
