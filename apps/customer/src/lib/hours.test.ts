@@ -13,6 +13,7 @@ const restaurant: Restaurant = {
   address: "",
   location: { lat: 0, lng: 0 },
   heroImageUrl: "",
+  imageUrls: [],
   timezone: "UTC",
   hours: [{ day: 3, open: "11:00", close: "22:00" }], // Wednesday
 };

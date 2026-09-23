@@ -7,3 +7,4 @@ export * from "./components/Card";
 export * from "./components/Badge";
 export * from "./components/Spinner";
 export * from "./components/EmptyState";
+export * from "./components/ImageCarousel";

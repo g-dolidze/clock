@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* See apps/customer/src/index.css for why this is needed: Tailwind's
+   automatic content detection doesn't reach outside this app's own
+   directory, so a utility class used only inside packages/web-shared/src
+   silently generates no CSS without this. */
+@source "../../../packages/web-shared/src";
+
 @theme {
   --font-display: "Archivo", "system-ui", sans-serif;
   --font-body: "Plus Jakarta Sans", "system-ui", sans-serif;

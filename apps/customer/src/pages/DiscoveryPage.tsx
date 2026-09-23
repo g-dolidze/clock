@@ -1,10 +1,57 @@
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
-import { EmptyState, Spinner } from "@ontime/web-shared";
+import { EmptyState, ImageCarousel, Spinner } from "@ontime/web-shared";
 import { useRestaurants } from "../hooks/useRestaurants";
 import { RestaurantCard } from "../components/RestaurantCard";
 import { MapView } from "../components/MapView";
 import { isOpenNow } from "../lib/hours";
+
+const HERO_IMAGES = ["/photos/interior-1.svg", "/photos/interior-4.svg", "/photos/interior-2.svg", "/photos/interior-5.svg"];
+
+function Hero({
+  q,
+  onQueryChange,
+  openNow,
+  onOpenNowChange,
+}: {
+  q: string;
+  onQueryChange: (value: string) => void;
+  openNow: boolean;
+  onOpenNowChange: (value: boolean) => void;
+}) {
+  return (
+    <section className="relative min-h-[380px] overflow-hidden rounded-3xl sm:min-h-[420px]">
+      <div className="absolute inset-0">
+        <ImageCarousel images={HERO_IMAGES} alt="" autoPlayMs={5000} showArrows={false} className="h-full w-full" />
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/10" />
+
+      <div className="relative flex min-h-[380px] flex-col justify-end gap-4 p-6 sm:min-h-[420px] sm:p-10">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="relative flex-1">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
+            <input
+              value={q}
+              onChange={(e) => onQueryChange(e.target.value)}
+              placeholder="Search restaurants, cuisines..."
+              role="search"
+              className="w-full rounded-full border border-white/20 bg-black/40 py-3 pl-9 pr-4 text-sm text-white outline-none backdrop-blur-sm placeholder:text-white/50 focus:border-[#e3572c]"
+            />
+          </div>
+          <label className="flex shrink-0 items-center gap-2 rounded-full border border-white/20 bg-black/40 px-4 py-3 text-sm font-medium text-white backdrop-blur-sm">
+            <input
+              type="checkbox"
+              checked={openNow}
+              onChange={(e) => onOpenNowChange(e.target.checked)}
+              className="h-4 w-4 accent-[#e3572c]"
+            />
+            Open now
+          </label>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export function DiscoveryPage() {
   const [q, setQ] = useState("");
@@ -25,33 +72,7 @@ export function DiscoveryPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-black text-white">Find the table, skip the wait</h1>
-        <p className="mt-1 text-white/60">
-          Book ahead or order for pickup / dine-in, and walk straight to a seat that's ready.
-        </p>
-      </div>
-
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <div className="relative flex-1">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40" />
-          <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Search restaurants, cuisines..."
-            className="w-full rounded-full border border-white/15 bg-white/5 py-2.5 pl-9 pr-4 text-sm text-white outline-none placeholder:text-white/40 focus:border-[#e3572c]"
-          />
-        </div>
-        <label className="flex shrink-0 items-center gap-2 text-sm text-white/70">
-          <input
-            type="checkbox"
-            checked={openNow}
-            onChange={(e) => setOpenNow(e.target.checked)}
-            className="h-4 w-4 accent-[#e3572c]"
-          />
-          Open now
-        </label>
-      </div>
+      <Hero q={q} onQueryChange={setQ} openNow={openNow} onOpenNowChange={setOpenNow} />
 
       {cuisines.length > 0 && (
         <div className="flex flex-wrap gap-2 text-xs text-white/50">

@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* Tailwind's automatic content detection doesn't reach outside this app's
+   own directory (its Vite import of @ontime/web-shared resolves through a
+   node_modules symlink, which the scanner excludes by default) — without
+   this, any utility class used only inside packages/web-shared/src and
+   never duplicated in this app's own files silently generates no CSS. */
+@source "../../../packages/web-shared/src";
+
 @theme {
   --font-display: "Archivo", "system-ui", sans-serif;
   --font-body: "Plus Jakarta Sans", "system-ui", sans-serif;

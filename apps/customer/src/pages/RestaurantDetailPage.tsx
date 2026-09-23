@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { MapPin, Star } from "lucide-react";
-import { Card, EmptyState, Spinner, priceRangeLabel } from "@ontime/web-shared";
+import { Button, Card, EmptyState, ImageCarousel, Spinner, priceRangeLabel } from "@ontime/web-shared";
 import { useRestaurant } from "../hooks/useRestaurants";
 import { MenuList } from "../components/MenuList";
 import { ReservationBooker } from "../components/ReservationBooker";
+import { RestaurantMap } from "../components/RestaurantMap";
 import { isOpenNow, todaysHoursLabel } from "../lib/hours";
 import { useCartStore } from "../store/cartStore";
 
@@ -31,37 +32,53 @@ export function RestaurantDetailPage() {
   const { restaurant, menu, tables } = data;
   const open = isOpenNow(restaurant);
   const freeTables = tables.filter((t) => t.status === "free").length;
+  const galleryImages = restaurant.imageUrls.length > 0 ? restaurant.imageUrls : [restaurant.heroImageUrl];
 
   return (
     <div className="space-y-6">
-      <div className="overflow-hidden rounded-3xl">
-        <img src={restaurant.heroImageUrl} alt={restaurant.name} className="h-64 w-full object-cover sm:h-80" />
-      </div>
+      <div className="grid gap-6 lg:grid-cols-[220px_1fr_220px]">
+        <ImageCarousel
+          images={galleryImages}
+          alt={restaurant.name}
+          className="aspect-square w-full rounded-3xl lg:aspect-auto lg:h-full lg:min-h-[260px]"
+        />
 
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
+        <div className="min-w-0 space-y-3">
+          <div className="flex flex-wrap gap-2">
+            {restaurant.cuisine.map((c) => (
+              <span key={c} className="rounded-full border border-white/10 px-2.5 py-1 text-xs text-white/60">
+                {c}
+              </span>
+            ))}
+          </div>
           <h1 className="text-3xl font-black text-white">{restaurant.name}</h1>
-          <p className="mt-1 max-w-2xl text-white/60">{restaurant.description}</p>
-          <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-white/60">
-            <span className="flex items-center gap-1">
-              <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-              {restaurant.rating.toFixed(1)}
-            </span>
-            <span className="font-mono-accent">{priceRangeLabel(restaurant.priceRange)}</span>
-            <span>{restaurant.cuisine.join(" · ")}</span>
+          <span className="flex w-fit items-center gap-1 text-sm text-white/60">
+            <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+            {restaurant.rating.toFixed(1)}
+          </span>
+          <p className="max-w-2xl text-white/60">{restaurant.description}</p>
+          <div className="flex flex-wrap items-center gap-3 text-sm text-white/60">
             <span className="flex items-center gap-1">
               <MapPin className="h-4 w-4" />
               {restaurant.address}
             </span>
+            <span className="font-mono-accent">{priceRangeLabel(restaurant.priceRange)}</span>
+            <span>{todaysHoursLabel(restaurant)}</span>
           </div>
-        </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm">
-          <p className={open ? "font-semibold text-emerald-400" : "font-semibold text-white/50"}>
-            {open ? "Open now" : "Closed now"}
+          <p className={open ? "text-sm font-semibold text-emerald-400" : "text-sm font-semibold text-white/50"}>
+            {open ? "Open now" : "Closed now"} · {freeTables} of {tables.length} tables free right now
           </p>
-          <p className="mt-1 text-white/60">Today: {todaysHoursLabel(restaurant)}</p>
-          <p className="mt-1 text-white/60">{freeTables} of {tables.length} tables free right now</p>
+          <Button variant="primary" onClick={() => setTab("reserve")}>
+            Reserve a table
+          </Button>
         </div>
+
+        <RestaurantMap
+          lat={restaurant.location.lat}
+          lng={restaurant.location.lng}
+          name={restaurant.name}
+          className="mx-auto w-full max-w-[220px] lg:mx-0 lg:self-start"
+        />
       </div>
 
       <div className="flex gap-2 border-b border-white/10">

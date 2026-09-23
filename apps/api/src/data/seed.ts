@@ -9,7 +9,22 @@ function id(prefix: string): string {
 const DAILY_HOURS = (open: string, close: string) =>
   Array.from({ length: 7 }, (_, day) => ({ day, open, close }));
 
-const RESTAURANT_SEEDS: Array<Omit<Restaurant, "id"> & { menu: Array<Omit<MenuItem, "id" | "restaurantId">> }> = [
+// Local gradient placeholders instead of a CDN — no external network
+// dependency for images, and no risk of them failing to load in a
+// sandboxed/offline dev environment (see apps/customer/public/photos and
+// the redesign TDD this mirrors). Each restaurant gets a deterministic,
+// rotating 4-of-6 slice so galleries don't all look identical.
+const PHOTO_COUNT = 6;
+function interiorPhotos(offset: number, count = 4): string[] {
+  return Array.from({ length: count }, (_, i) => `/photos/interior-${((offset + i) % PHOTO_COUNT) + 1}.svg`);
+}
+
+const RESTAURANT_SEEDS: Array<
+  Omit<Restaurant, "id" | "heroImageUrl" | "imageUrls"> & {
+    imageUrls: string[];
+    menu: Array<Omit<MenuItem, "id" | "restaurantId">>;
+  }
+> = [
   {
     slug: "tbilisi-grill-house",
     name: "Tbilisi Grill House",
@@ -19,7 +34,7 @@ const RESTAURANT_SEEDS: Array<Omit<Restaurant, "id"> & { menu: Array<Omit<MenuIt
     rating: 4.7,
     address: "12 Rustaveli Ave, Tbilisi",
     location: { lat: 41.6977, lng: 44.7999 },
-    heroImageUrl: "https://images.unsplash.com/photo-1544025162-d76694265947?w=800",
+    imageUrls: interiorPhotos(0),
     hours: DAILY_HOURS("11:00", "23:00"),
     timezone: "Asia/Tbilisi",
     menu: [
@@ -39,7 +54,7 @@ const RESTAURANT_SEEDS: Array<Omit<Restaurant, "id"> & { menu: Array<Omit<MenuIt
     rating: 4.5,
     address: "4 Rustaveli St, Batumi",
     location: { lat: 41.6461, lng: 41.6367 },
-    heroImageUrl: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800",
+    imageUrls: interiorPhotos(2),
     hours: DAILY_HOURS("12:00", "23:30"),
     timezone: "Asia/Tbilisi",
     menu: [
@@ -59,7 +74,7 @@ const RESTAURANT_SEEDS: Array<Omit<Restaurant, "id"> & { menu: Array<Omit<MenuIt
     rating: 4.6,
     address: "8 Tsereteli St, Kutaisi",
     location: { lat: 42.2679, lng: 42.6946 },
-    heroImageUrl: "https://images.unsplash.com/photo-1554679665-f5537f187268?w=800",
+    imageUrls: interiorPhotos(4),
     hours: DAILY_HOURS("16:00", "01:00"),
     timezone: "Asia/Tbilisi",
     menu: [
@@ -82,9 +97,9 @@ export function seed() {
   store.payments.clear();
 
   for (const seedRestaurant of RESTAURANT_SEEDS) {
-    const { menu, ...rest } = seedRestaurant;
+    const { menu, imageUrls, ...rest } = seedRestaurant;
     const restaurantId = id("rst");
-    const restaurant: Restaurant = { id: restaurantId, ...rest };
+    const restaurant: Restaurant = { id: restaurantId, imageUrls, heroImageUrl: imageUrls[0], ...rest };
     store.restaurants.set(restaurantId, restaurant);
 
     for (const item of menu) {
