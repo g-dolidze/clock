@@ -54,6 +54,8 @@ export interface Restaurant {
   address: string;
   location: GeoPoint;
   heroImageUrl: string;
+  /** Gallery photos, cover image first. Capped at 10; may be empty. */
+  imageUrls: string[];
   hours: OpenHours[];
   timezone: string;
 }
